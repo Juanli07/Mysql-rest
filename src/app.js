@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 
 //routes
 require('./routes/userRoutes')(app);
+require('./routes/booksRoutes')(app);
 
 
 app.listen(app.get('port'), () => {
