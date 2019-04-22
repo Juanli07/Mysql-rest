@@ -7,12 +7,12 @@ connection = mysql.createConnection({
     database : 'library'
 });
 
-let bookModel ={};
+let userModel = {};
 
-bookModel.getBooks = (callback) => {
+userModel.getUsers = (callback) => {
     if(connection){
         connection.query(
-            'SELECT * FROM books ORDER BY id',
+            'SELECT * FROM delinquent_user ORDER BY id',
             (err, rows) => {
                 if(err){
                     throw err;
@@ -20,14 +20,14 @@ bookModel.getBooks = (callback) => {
                     callback(null, rows);
                 }
             }
-        )
+            )
     }
 };
 
-bookModel.insertBook = (bookData, callback) => {
+userModel.insertUser = (duserData, callback) => {
     if(connection){
         connection.query(
-            'INSERT INTO books SET ?', bookData,
+            'INSERT INTO delinquent_user SET ?', duserData,
             (err, result) => {
                 if(err){
                     throw err;
@@ -41,17 +41,14 @@ bookModel.insertBook = (bookData, callback) => {
     }
 };
 
-bookModel.updateBook = (bookData, callback) => {
+userModel.updateUser = (duserData, callback) => {
     if(connection){
 
         const sql = `
-            UPDATE books SET
-            title = ${connection.escape(bookData.title)},
-            author = ${connection.escape(bookData.author)},
-            editorial = ${connection.escape(bookData.editorial)},
-            subject = ${connection.escape(bookData.subject)},
-            price = ${connection.escape(bookData.price)}
-            WHERE id = ${connection.escape(bookData.id)}
+            UPDATE delinquent_user SET
+            id_user = ${connection.escape(duserData.id_user)},
+            id_lendings = ${connection.escape(duserData.id_lendings)}
+            WHERE id = ${connection.escape(duserData.id)}
             
         `
         connection.query(sql, (err, result) => {
@@ -69,16 +66,16 @@ bookModel.updateBook = (bookData, callback) => {
     }
 };
 
-bookModel.deleteBook = (id, callback) => {
+userModel.deleteUser = (id, callback) => {
     if(connection){
         let sql = `
-            SELECT * FROM books WHERE id = ${connection.escape(id)}
+            SELECT * FROM delinquent_user WHERE id = ${connection.escape(id)}
         `;
 
         connection.query(sql, (err, row) => {
             if(row){
                 let sql = `
-                    DELETE FROM books WHERE id = ${connection.escape(id)}
+                    DELETE FROM delinquent_user WHERE id = ${connection.escape(id)}
                 `;
                connection.query(sql, (err, result) =>{
                     if(err){
@@ -98,5 +95,4 @@ bookModel.deleteBook = (id, callback) => {
     }
 };
 
-
-module.exports = bookModel;
+module.exports = userModel;
