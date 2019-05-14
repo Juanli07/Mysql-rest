@@ -35,7 +35,7 @@ CREATE TABLE lendings(
     id_book INT(10),
     retired_day TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(id_user) REFERENCES users(id), 
-    FOREIGN KEY(id_book) REFERENCEs books(id)
+    FOREIGN KEY(id_book) REFERENCES books(id)
 );
 
 CREATE TABLE returns(

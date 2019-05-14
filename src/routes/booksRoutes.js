@@ -8,6 +8,13 @@ module.exports = function(app){
         })
 });
 
+app.get('/books/:title', (req, res) => {
+  var title = req.params.title
+  book.getByTitle(title, (err, data) => {
+    res.status(200).json(data); 
+  })
+});
+
 app.post('/books', (req, res) => {
     const bookData = {
     id : null,

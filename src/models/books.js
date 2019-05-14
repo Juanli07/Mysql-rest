@@ -1,22 +1,39 @@
 const mysql = require('mysql');
 
 connection = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '1431',
-    database : 'library'
+    host: 'localhost',
+    user: 'root',
+    password: '1431',
+    database: 'library'
 });
 
-let bookModel ={};
+let bookModel = {};
 
 bookModel.getBooks = (callback) => {
-    if(connection){
+    if (connection) {
         connection.query(
             'SELECT * FROM books ORDER BY id',
             (err, rows) => {
-                if(err){
-                    throw err;
-                }else{
+                if (err) {
+                    console.log(err)
+                } else {
+                    callback(null, rows);
+                }
+            }
+        )
+    }
+};
+
+
+bookModel.getByTitle = (title, callback) => {
+    if (connection) {
+        console.log(title)
+        connection.query(
+            `SELECT * FROM books WHERE title='${title}'`,
+            (err, rows) => {
+                if (err) {
+                    console.log(err)
+                } else {
                     callback(null, rows);
                 }
             }
@@ -25,15 +42,15 @@ bookModel.getBooks = (callback) => {
 };
 
 bookModel.insertBook = (bookData, callback) => {
-    if(connection){
+    if (connection) {
         connection.query(
             'INSERT INTO books SET ?', bookData,
             (err, result) => {
-                if(err){
-                    throw err;
-                }else{
+                if (err) {
+                    console.log(err)
+                } else {
                     callback(null, {
-                        'insertId' : result.insertId
+                        'insertId': result.insertId
                     })
                 }
             }
@@ -42,7 +59,7 @@ bookModel.insertBook = (bookData, callback) => {
 };
 
 bookModel.updateBook = (bookData, callback) => {
-    if(connection){
+    if (connection) {
 
         const sql = `
             UPDATE books SET
@@ -55,43 +72,43 @@ bookModel.updateBook = (bookData, callback) => {
             
         `
         connection.query(sql, (err, result) => {
-            if(err){
-                throw err;
-            }else{
+            if (err) {
+                console.log(err)
+            } else {
                 callback(null, {
-                    msg : 'succces'
+                    msg: 'succces'
                 });
             }
         })
-        
-        
-        
+
+
+
     }
 };
 
 bookModel.deleteBook = (id, callback) => {
-    if(connection){
+    if (connection) {
         let sql = `
             SELECT * FROM books WHERE id = ${connection.escape(id)}
         `;
 
         connection.query(sql, (err, row) => {
-            if(row){
+            if (row) {
                 let sql = `
                     DELETE FROM books WHERE id = ${connection.escape(id)}
                 `;
-               connection.query(sql, (err, result) =>{
-                    if(err){
-                        throw err;
-                    }else{
+                connection.query(sql, (err, result) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
                         callback(null, {
-                            msg : 'deleted'
+                            msg: 'deleted'
                         })
                     }
-               }) 
-            }else{
+                })
+            } else {
                 callback(null, {
-                    msg : 'NOT EXISTS'
+                    msg: 'NOT EXISTS'
                 })
             }
         });
