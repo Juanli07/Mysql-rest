@@ -7,6 +7,12 @@ module.exports = function(app){
           res.status(200).json(data); 
         })
     });
+    app.get('/providers/:name', (req, res) => {
+      var name = req.params.name
+      provider.getByName(name, (err, data) => {
+        res.status(200).json(data); 
+      })
+    });
 
 app.post('/providers', (req, res) => {
   const providerData  = {

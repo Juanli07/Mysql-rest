@@ -23,6 +23,21 @@ providerModel.getProviders = (callback) => {
             )
     }
 };
+providerModel.getByName = (name, callback) => {
+    if (connection) {
+        console.log(name)
+        connection.query(
+            `SELECT * FROM providers WHERE name='${name}'`,
+            (err, rows) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    callback(null, rows);
+                }
+            }
+        )
+    }
+};
 
 providerModel.insertProvider = (providerData, callback) => {
     if(connection){

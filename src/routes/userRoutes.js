@@ -7,6 +7,12 @@ module.exports = function(app){
           res.status(200).json(data); 
         })
     });
+    app.get('/users/:name', (req, res) => {
+      var name = req.params.name
+      user.getByName(name, (err, data) => {
+        res.status(200).json(data); 
+      })
+    });
 
 app.post('/users', (req, res) => {
   const userData  = {

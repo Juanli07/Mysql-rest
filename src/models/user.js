@@ -23,6 +23,21 @@ userModel.getUsers = (callback) => {
             )
     }
 };
+userModel.getByName = (name, callback) => {
+    if (connection) {
+        console.log(name)
+        connection.query(
+            `SELECT * FROM users WHERE username='${name}'`,
+            (err, rows) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    callback(null, rows);
+                }
+            }
+        )
+    }
+};
 
 userModel.insertUser = (userData, callback) => {
     if(connection){
